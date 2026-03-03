@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { ViewType } from '@/types'
 import { logoUrl } from '@/lib/constants'
 
@@ -9,7 +10,7 @@ interface HeaderProps {
   cartCount: number
 }
 
-export default function Header({ view, setView, cartCount }: HeaderProps) {
+function HeaderComponent({ view, setView, cartCount }: HeaderProps) {
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.08)] flex items-center justify-between px-3 md:px-[2rem] h-[70px] md:h-[100px] sticky top-0 z-[200]">
       <div className="flex items-center shrink-0 w-auto">
@@ -69,3 +70,5 @@ export default function Header({ view, setView, cartCount }: HeaderProps) {
     </header>
   )
 }
+
+export default memo(HeaderComponent)

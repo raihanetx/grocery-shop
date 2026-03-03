@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { ViewType } from '@/types'
 import { logoUrl } from '@/lib/constants'
 
@@ -34,7 +35,7 @@ const configItems = [
   { id: 'credentials', label: 'Credentials', icon: 'ri-shield-keyhole-line' },
 ]
 
-export default function AdminSidebar({
+function AdminSidebar({
   dashView,
   setDashView,
   sidebarCollapsed,
@@ -111,3 +112,5 @@ export default function AdminSidebar({
     </aside>
   )
 }
+
+export default memo(AdminSidebar)
