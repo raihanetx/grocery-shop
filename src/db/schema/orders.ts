@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { customers, products } from './products'
 
@@ -22,7 +22,10 @@ export const orders = sqliteTable('orders', {
   couponCodes: text('coupon_codes').default('[]'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
-})
+}, (table) => ({
+  statusIdx: index('idx_orders_status').on(table.status),
+  customerIdx: index('idx_orders_customer').on(table.customerId),
+}))
 
 export const orderItems = sqliteTable('order_items', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -36,7 +39,9 @@ export const orderItems = sqliteTable('order_items', {
   couponDiscount: real('coupon_discount').default(0),
   orderId: text('order_id').references(() => orders.id, { onDelete: 'cascade' }).notNull(),
   productId: integer('product_id').references(() => products.id),
-})
+}, (table) => ({
+  orderIdx: index('idx_order_items_order').on(table.orderId),
+}))
 
 export const coupons = sqliteTable('coupons', {
   id: text('id').primaryKey(),
@@ -61,7 +66,9 @@ export const abandonedCheckouts = sqliteTable('abandoned_checkouts', {
   completedOrders: integer('completed_orders').default(0),
   history: text('history').notNull(), // JSON
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
-})
+}, (table) => ({
+  phoneIdx: index('idx_abandoned_phone').on(table.phone),
+}))
 
 export const settings = sqliteTable('settings', {
   id: integer('id').primaryKey().default(1),

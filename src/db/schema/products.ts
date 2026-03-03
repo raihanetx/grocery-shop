@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 
 export const categories = sqliteTable('categories', {
@@ -10,7 +10,9 @@ export const categories = sqliteTable('categories', {
   items: integer('items').default(0),
   status: text('status').default('Active'),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
-})
+}, (table) => ({
+  statusIdx: index('idx_categories_status').on(table.status),
+}))
 
 export const products = sqliteTable('products', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -32,7 +34,11 @@ export const products = sqliteTable('products', {
   relatedProducts: text('related_products'), // JSON array of related product IDs
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
-})
+}, (table) => ({
+  statusIdx: index('idx_products_status').on(table.status),
+  categoryIdx: index('idx_products_category').on(table.category),
+  offerIdx: index('idx_products_offer').on(table.offer),
+}))
 
 export const variants = sqliteTable('variants', {
   id: integer('id').primaryKey({ autoIncrement: true }),
