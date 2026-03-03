@@ -3,6 +3,10 @@ import { db } from '@/db'
 import { coupons } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
+// Enable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 30
+
 // GET /api/coupons - Get all coupons
 export async function GET(request: NextRequest) {
   try {

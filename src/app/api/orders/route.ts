@@ -3,6 +3,10 @@ import { db } from '@/db'
 import { orders, orderItems } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
+// Enable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 30
+
 // GET /api/orders - Get all orders
 export async function GET(request: NextRequest) {
   try {
