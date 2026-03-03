@@ -3,6 +3,10 @@ import { db } from '@/db'
 import { products } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
+// Enable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 60 // Cache for 60 seconds
+
 // GET /api/products - Get all products
 export async function GET(request: NextRequest) {
   try {
@@ -10,8 +14,16 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category')
     const search = searchParams.get('search')
     const offer = searchParams.get('offer')
+    const status = searchParams.get('status')
     
     let result = await db.select().from(products)
+    
+    // Filter by status first (most common filter)
+    if (status === 'active') {
+      result = result.filter(p => p.status === 'active' || p.status === 'Active')
+    } else if (status === 'inactive') {
+      result = result.filter(p => p.status === 'inactive' || p.status === 'Inactive')
+    }
     
     if (category) {
       result = result.filter(p => p.category === category)

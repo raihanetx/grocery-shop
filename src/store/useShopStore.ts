@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-// Types
+// Types - unchanged
 export interface ShopCategory {
   id: string
   name: string
@@ -37,10 +37,8 @@ interface ShopState {
   isLoading: boolean
   error: string | null
   
-  // Actions
+  // Actions - simplified
   fetchData: () => Promise<void>
-  fetchCategories: () => Promise<void>
-  fetchProducts: () => Promise<void>
   setSelectedProduct: (product: ShopProduct | null) => void
 }
 
@@ -53,12 +51,20 @@ export const useShopStore = create<ShopState>((set, get) => ({
 
   setSelectedProduct: (product) => set({ selectedProduct: product }),
 
+  // Optimized fetch with caching - uses Next.js cache
   fetchData: async () => {
+    const { products, categories } = get()
+    
+    // Return cached data if already loaded
+    if (products.length > 0 && categories.length > 0) {
+      return
+    }
+    
     set({ isLoading: true, error: null })
     try {
       const [categoriesRes, productsRes] = await Promise.all([
-        fetch('/api/categories'),
-        fetch('/api/products')
+        fetch('/api/categories', { cache: 'force-cache' }),
+        fetch('/api/products?status=active', { cache: 'force-cache' })
       ])
       
       const categoriesData = await categoriesRes.json()
@@ -76,30 +82,6 @@ export const useShopStore = create<ShopState>((set, get) => ({
     } catch (error) {
       console.error('Error fetching shop data:', error)
       set({ error: 'Failed to load data', isLoading: false })
-    }
-  },
-
-  fetchCategories: async () => {
-    try {
-      const response = await fetch('/api/categories')
-      const data = await response.json()
-      if (data.success) {
-        set({ categories: data.data })
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  },
-
-  fetchProducts: async () => {
-    try {
-      const response = await fetch('/api/products')
-      const data = await response.json()
-      if (data.success) {
-        set({ products: data.data })
-      }
-    } catch (error) {
-      console.error('Error fetching products:', error)
     }
   }
 }))

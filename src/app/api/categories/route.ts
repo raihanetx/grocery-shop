@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/db'
 import { categories, products } from '@/db/schema'
-import { eq, sql, isNull } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
+
+// Enable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 60 // Cache for 60 seconds
 
 // GET /api/categories - Get all categories with product counts
 export async function GET() {
