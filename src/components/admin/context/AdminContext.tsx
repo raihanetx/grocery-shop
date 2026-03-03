@@ -359,6 +359,9 @@ export function AdminProvider({ children, setView }: { children: ReactNode; setV
   
   // Fetch functions
   const fetchCategories = async () => {
+    // Skip if already loaded
+    if (categories.length > 0) return
+    
     try {
       const response = await fetch('/api/categories')
       const data = await response.json()
@@ -380,6 +383,9 @@ export function AdminProvider({ children, setView }: { children: ReactNode; setV
   }
   
   const fetchProducts = async () => {
+    // Skip if already loaded
+    if (products.length > 0) return
+    
     try {
       const response = await fetch('/api/products')
       const data = await response.json()
@@ -408,6 +414,9 @@ export function AdminProvider({ children, setView }: { children: ReactNode; setV
   }
   
   const fetchOrders = async () => {
+    // Skip if already loaded
+    if (orders.length > 0) return
+    
     try {
       const response = await fetch('/api/orders')
       const data = await response.json()
@@ -438,6 +447,9 @@ export function AdminProvider({ children, setView }: { children: ReactNode; setV
   }
   
   const fetchCoupons = async () => {
+    // Skip if already loaded
+    if (coupons.length > 0) return
+    
     try {
       const response = await fetch('/api/coupons')
       const data = await response.json()
