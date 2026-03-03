@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ViewType } from '@/types'
 import { useCartStore, useOrderStore } from '@/store'
+import { useShopStore } from '@/store/useShopStore'
 
 // Layout Components
 import Header from '@/components/layout/Header'
@@ -26,10 +27,19 @@ import AdminDashboard from '@/components/admin/AdminDashboard'
 // Main App Entry
 export default function Home() {
   const [view, setView] = useState<ViewType>('shop')
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false)
   
   // Use Zustand stores
   const { items: cartItems, addItem: addToCart, clearCart } = useCartStore()
   const { orders, addOrder } = useOrderStore()
+  const { fetchData, products } = useShopStore()
+
+  // Pre-fetch data once on mount (silent, no loading state)
+  useEffect(() => {
+    if (!initialDataLoaded && products.length === 0) {
+      fetchData().then(() => setInitialDataLoaded(true))
+    }
+  }, [fetchData, initialDataLoaded, products.length])
 
   const handleConfirmOrder = () => {
     // Create order from cart

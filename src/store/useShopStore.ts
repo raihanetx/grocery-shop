@@ -51,7 +51,7 @@ export const useShopStore = create<ShopState>((set, get) => ({
 
   setSelectedProduct: (product) => set({ selectedProduct: product }),
 
-  // Optimized fetch with caching - uses Next.js cache
+  // Optimized fetch - no loading state, instant
   fetchData: async () => {
     const { products, categories } = get()
     
@@ -60,11 +60,11 @@ export const useShopStore = create<ShopState>((set, get) => ({
       return
     }
     
-    set({ isLoading: true, error: null })
+    // Silent fetch - no loading state
     try {
       const [categoriesRes, productsRes] = await Promise.all([
-        fetch('/api/categories', { cache: 'force-cache' }),
-        fetch('/api/products?status=active', { cache: 'force-cache' })
+        fetch('/api/categories'),
+        fetch('/api/products?status=active')
       ])
       
       const categoriesData = await categoriesRes.json()
@@ -77,11 +77,8 @@ export const useShopStore = create<ShopState>((set, get) => ({
       if (productsData.success) {
         set({ products: productsData.data })
       }
-      
-      set({ isLoading: false })
     } catch (error) {
       console.error('Error fetching shop data:', error)
-      set({ error: 'Failed to load data', isLoading: false })
     }
   }
 }))
