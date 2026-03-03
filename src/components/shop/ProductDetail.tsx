@@ -90,12 +90,12 @@ export default function ProductDetail({ setView, addToCart }: ProductDetailProps
             {product?.discount && product.discount !== '0%' && (
               <div className="absolute top-3 left-3 bg-[#16a34a] text-white text-[10px] font-bold px-2.5 py-1 rounded-md z-10 shadow-md">-{product.discount} OFF</div>
             )}
-            <img src={sampleProduct.img} className="absolute inset-0 w-full h-full object-contain" alt={sampleProduct.name} />
+            <img src={sampleProduct.img} className="absolute inset-0 w-full h-full object-contain" alt={sampleProduct.name} loading="lazy" />
           </div>
           {product?.image && (
           <div className="grid grid-cols-4 gap-2 mt-3 flex-shrink-0">
             <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-100 cursor-pointer hover:opacity-80 transition-opacity border-[#16a34a]">
-              <img src={product.image} className="w-full h-full object-cover" alt="Product image" />
+              <img src={product.image} className="w-full h-full object-cover" alt="Product image" loading="lazy" />
             </div>
           </div>
           )}

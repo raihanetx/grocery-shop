@@ -87,7 +87,7 @@ export default function Shop({ setView, addToCart }: ShopProps) {
                       {cat.type === 'icon' && cat.icon ? (
                         <i className={`${cat.icon} text-2xl md:text-4xl`}></i>
                       ) : cat.type === 'image' && cat.image ? (
-                        <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                        <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" loading="lazy" />
                       ) : (
                         <i className="ri-folder-line text-2xl md:text-4xl"></i>
                       )}
@@ -116,7 +116,7 @@ export default function Shop({ setView, addToCart }: ShopProps) {
                 onClick={() => setView('product')}
               >
                 <div className="w-[80px] h-full flex justify-center items-center p-2 pl-6">
-                  <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain" />
+                  <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain" loading="lazy" />
                 </div>
                 <div className="w-[1px] h-[70%] bg-[#e0e0e0]"></div>
                 <div className="flex-1 py-2 px-3 flex flex-col justify-center">
