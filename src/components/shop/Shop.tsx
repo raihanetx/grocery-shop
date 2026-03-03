@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { CartItem, ViewType } from '@/types'
 import { useShopStore } from '@/store/useShopStore'
 import { heroImages } from '@/lib/constants'
@@ -10,9 +10,9 @@ interface ShopProps {
   addToCart: (item: CartItem) => void
 }
 
-export default function Shop({ setView, addToCart }: ShopProps) {
+function ShopComponent({ setView, addToCart }: ShopProps) {
   const [currentHero, setCurrentHero] = useState(0)
-  const { categories, products, isLoading, fetchData, setSelectedProduct } = useShopStore()
+  const { categories, products, fetchData, setSelectedProduct } = useShopStore()
 
   const handleProductClick = (product: any) => {
     setSelectedProduct(product)
@@ -67,7 +67,7 @@ export default function Shop({ setView, addToCart }: ShopProps) {
             <p className="text-gray-500 mt-1 text-sm md:text-base font-bangla">আপনার প্রয়োজনীয় সবকিছু এখানেই পাবেন</p>
           </div>
           
-          {isLoading ? (
+          {categories.length === 0 ? (
             <div className="flex justify-center">
               <div className="flex gap-4 md:gap-5 overflow-x-auto pb-2">
                 {[1, 2, 3, 4, 5].map((i) => (
@@ -152,7 +152,7 @@ export default function Shop({ setView, addToCart }: ShopProps) {
       {/* Product Grid */}
       <section className="pb-12 pt-2">
         <div className="container mx-auto px-4 md:px-6">
-          {isLoading ? (
+          {products.length === 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="bg-white p-3 shadow-sm border border-gray-200 rounded-2xl animate-pulse">
@@ -218,3 +218,6 @@ export default function Shop({ setView, addToCart }: ShopProps) {
     </main>
   )
 }
+
+// Memoize to prevent unnecessary re-renders
+export default memo(ShopComponent)
