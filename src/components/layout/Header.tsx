@@ -19,7 +19,7 @@ export default function Header({ view, setView, cartCount }: HeaderProps) {
           </div>
         )}
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('shop')}>
-          <img src={logoUrl} alt="Logo" className="h-[70px] w-[70px] md:h-[90px] md:w-[90px] object-contain" />
+          <img src={logoUrl} alt="Logo" className="h-[70px] w-[70px] md:h-[90px] md:w-[90px] object-contain" loading="lazy" />
         </div>
       </div>
 

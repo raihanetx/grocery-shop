@@ -626,7 +626,7 @@ export default function ProductsView() {
             <div key={prod.id} className="prod-order-card product-row">
               <div className="prod-grid-row">
                 <div className="product-cell">
-                  <img src={prod.image} alt={prod.name} />
+                  <img src={prod.image} alt={prod.name} loading="lazy" />
                   <div className="product-info"><span className="product-name">{prod.name}</span><span className="product-cat">{prod.category}</span></div>
                 </div>
                 <div>{(prod as any).variantsData ? (Array.isArray((prod as any).variantsData) ? (prod as any).variantsData.length : 0) : 0} variants</div>

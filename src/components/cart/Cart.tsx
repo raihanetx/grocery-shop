@@ -34,7 +34,7 @@ export default function Cart({ setView, cartItems, setCartItems }: CartProps) {
         <div className="cart-items-list">
           {cartItems.map((item, index) => (
             <div key={index} className="c12-item">
-              <img src={item.img} className="c12-img" alt={item.name} />
+              <img src={item.img} className="c12-img" alt={item.name} loading="lazy" />
               <div className="c12-info">
                 <div className="c12-name-row"><span className="c12-name">{item.name}</span> <span className="c12-weight">({item.weight})</span></div>
                 <div className="c12-action-row">
